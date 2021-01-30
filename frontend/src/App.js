@@ -1,12 +1,16 @@
-import React, { Component, Fragment } from 'react';
-import Map from './components/Map'
+import logo from './logo.svg';
+import './App.css';
+import {Menu} from './components/Menu';
+import {Content} from './components/Content';
 
-class App extends Component {
-  render() {
-    return (
-      <Map/>
-    );
-  }
+
+function App() {
+  return (
+    <div className="App">
+      <Menu/>
+      <Content/>
+    </div>
+  );
 }
 
 export default App;
