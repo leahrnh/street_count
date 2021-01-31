@@ -16,30 +16,18 @@ const wrapper = {
   }
 
   const getIcon = function(marker) {
-    if (marker.label === 0) return new L.DivIcon({
-      html: '<div class="container"><img src='+ carImage +' style="width:100%;"><div class="centered">'+marker.count+'</div></div>',
-      iconSize: L.point(30, 30, true),
-      className: 'cluster'
-    });
+    if (marker.label === 0) return generateIcon(carImage, marker.count);
+    if (marker.label === 1) return generateIcon(personImage, marker.count);
+    return generateIcon(bikeImage, marker.count);
+  }
 
-    if (marker.label === 1) return new L.DivIcon({
-      html: '<div class="container"><img src='+ personImage +' style="width:100%;"><div class="centered">'+marker.count+'</div></div>',
-      iconSize: L.point(30, 30, true),
-      className: 'cluster'
-    });
-
+  const generateIcon = function(image, count) {
     return new L.DivIcon({
-      html: '<div class="container"><img src='+ bikeImage +' style="width:100%;"><div class="centered">'+marker.count+'</div></div>',
+      html: '<div class="container"><img src='+ image +' style="width:100%;"><div class="centered">'+count+'</div></div>',
       iconSize: L.point(30, 30, true),
       className: 'cluster'
     });
   }
-
-  const iconPerson = new L.DivIcon({
-    html: '<div class="container"><img src='+ personImage +' style="width:100%;"><div class="centered"></div></div>',
-    iconSize: L.point(30, 30, true),
-    className: 'cluster'
-  })
 
   const createClusterCustomIcon = function (cluster) {
     var count = 0;
