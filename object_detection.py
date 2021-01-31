@@ -134,7 +134,7 @@ class VideoDetect:
             full_json['rekognition'].append(response)
 
         # Write output to json file
-        with open('response.json', 'w') as f:
+        with open('response7223_10s.json', 'w') as f:
             json.dump(full_json, f)
 
     def CreateTopicandQueue(self):
@@ -197,7 +197,7 @@ class VideoDetect:
 def main():
     roleArn = 'arn:aws:iam::073422687774:role/rekog'
     bucket = 'pgh-civic-hackathon-street-count'
-    video = 'IMG_7220.MOV'
+    video = 'IMG_7223_10s.mov'
 
     analyzer = VideoDetect(roleArn, bucket, video)
     analyzer.CreateTopicandQueue()
