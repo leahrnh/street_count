@@ -131,11 +131,11 @@ class VideoDetect:
                 else:
                     finished = True
 
-                full_json['rekognition'].append(response)
+            full_json['rekognition'].append(response)
 
-            # Write output to json file
-            with open('response.json', 'w') as f:
-                json.dump(full_json, f)
+        # Write output to json file
+        with open('response.json', 'w') as f:
+            json.dump(full_json, f)
 
     def CreateTopicandQueue(self):
 

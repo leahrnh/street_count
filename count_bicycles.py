@@ -10,19 +10,15 @@ def main():
     with open(json_filename, 'r') as f:
         rekognition = json.load(f)
 
-
     for response in rekognition['rekognition']:
-
-        print('Codec: ' + response['VideoMetadata']['Codec'])
-        print('Duration: ' + str(response['VideoMetadata']['DurationMillis']))
 
         for labelDetection in response['Labels']:
             label = labelDetection['Label']
             timestamp = labelDetection['Timestamp']
             labelname = label['Name']
-            print(timestamp)
             if 'Bicycle' in labelname:
-                print(labelname)
+                if 'Instances' in label:
+                    print(f"{timestamp}\t{labelname}\t{len(label['Instances'])}")
 
 
 if __name__ == "__main__":
