@@ -13,10 +13,39 @@ const AddressSelectorPanel = styled.div`
     }
 `
 
-export class AddressSelector extends React.Component<{updateMarkers: any}, { value: string }> {
+// const FilterButton = ({name: str, label: number}) => {
+//     const [active, setActive] = useState(true);
+
+//     return (
+//         <button onClick={() => handleClick(1)}>Pedestrian</button>
+//     )
+
+    
+// }
+
+const FilterButton = styled.button`
+     display:inline-block;
+     padding:0.3em 1.2em;
+     margin:0 0.3em 0.3em 0;
+     border-radius:2em;
+     box-sizing: border-box;
+     text-decoration:none;
+     font-family:'Roboto',sans-serif;
+     font-weight:300;
+     color:#FFFFFF;
+     background-color:#4eb5f1;
+     text-align:center;
+     transition: all 0.2s;
+    }
+    a.button3:hover{
+     background-color:#4095c6;
+    }
+`
+
+export class AddressSelector extends React.Component<{updateDataSource: any}, { value: string, dataSource: string }> {
     constructor(props: any) {
         super(props);
-        this.state = {value: ''};
+        this.state = {value: '', dataSource: 'fake'};
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -26,9 +55,9 @@ export class AddressSelector extends React.Component<{updateMarkers: any}, { val
     }
 
     handleSubmit(event: any) {
-        this.props.updateMarkers(data);
-        alert(this.state.value);
         event.preventDefault();
+        this.setState({dataSource: this.state.dataSource === 'real' ? 'fake' : 'real'})
+        this.props.updateDataSource(this.state.dataSource);
     } 
 
     render() {

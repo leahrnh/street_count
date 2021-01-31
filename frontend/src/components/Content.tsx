@@ -43,11 +43,19 @@ const Info = () => {
 
 const Data = () => {
     const [markers, setMarkers] = useState(realData);
+    
+    const updateDataSource = (source: string) => {
+        if(source === 'real') {
+            setMarkers(realData);
+        }
+        else {
+            setMarkers(data);
+        }
+    }
 
     const updateMarkers = (options: any) => {
-        // newData: any = realData
         setMarkers(
-            [...realData.filter((marker: any) => {
+            [...markers.filter((marker: any) => {
                 const d = new Date(marker.date);
                 return options.active[marker.label] && d >= options.startDate && d <= options.endDate;  
             })]
@@ -57,7 +65,7 @@ const Data = () => {
     return (
         <DataPanel>
             <FilterPanel>
-                <AddressSelector updateMarkers={updateMarkers}/>
+                <AddressSelector updateDataSource={updateDataSource}/>
             </FilterPanel>
             <BorderedFilterPanel>
                 <DataFilter updateMarkers={updateMarkers}/>
