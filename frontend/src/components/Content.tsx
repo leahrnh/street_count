@@ -31,6 +31,22 @@ const FilterPanel = styled.div`
 
 const BorderedFilterPanel = styled(FilterPanel)`
   border: 2px solid #dddddd;
+  padding-bottom: 0px;
+  button {
+      float: left;
+      box-sizing: border-box;
+      margin: 15px 5px;
+      background-color: #dddddd;
+      border-radius: 5px;
+      text-decoration:none; 
+  }
+`
+
+const ChartPanel = styled.div`
+    align-items: center;
+    margin: auto;
+    width: 98%;
+    height: 200px;
 `
 
 const Info = () => {
@@ -42,20 +58,23 @@ const Info = () => {
 };
 
 const Data = () => {
-    const [markers, setMarkers] = useState(realData);
+    const [dataSource, setDataSource] = useState(realData);
+    const [markers, setMarkers] = useState(dataSource);
     
     const updateDataSource = (source: string) => {
         if(source === 'real') {
-            setMarkers(realData);
+            setDataSource(realData);
         }
         else {
-            setMarkers(data);
+            setDataSource(data);
         }
+        setMarkers(dataSource);
     }
 
-    const updateMarkers = (options: any) => {
+    const updateMarkers = (options: any) => {        
+        const newMarkers = [...dataSource]
         setMarkers(
-            [...markers.filter((marker: any) => {
+            [...newMarkers.filter((marker: any) => {
                 const d = new Date(marker.date);
                 return options.active[marker.label] && d >= options.startDate && d <= options.endDate;  
             })]
@@ -70,7 +89,9 @@ const Data = () => {
             <BorderedFilterPanel>
                 <DataFilter updateMarkers={updateMarkers}/>
             </BorderedFilterPanel>
-            <Example/>
+            <ChartPanel>
+                <Example/>
+            </ChartPanel>
             <TrafficMap markers={markers}/>
         </DataPanel>
     )

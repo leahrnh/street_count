@@ -13,16 +13,6 @@ const AddressSelectorPanel = styled.div`
     }
 `
 
-// const FilterButton = ({name: str, label: number}) => {
-//     const [active, setActive] = useState(true);
-
-//     return (
-//         <button onClick={() => handleClick(1)}>Pedestrian</button>
-//     )
-
-    
-// }
-
 const FilterButton = styled.button`
      display:inline-block;
      padding:0.3em 1.2em;
@@ -91,10 +81,10 @@ export const DataFilter = ({updateMarkers}: any) => {
     }
 
     return (
-        <div>
+        <>
             <button onClick={() => handleClick(1)}>Pedestrian</button>
             <button onClick={() => handleClick(2)}>Bike</button>
             <button onClick={() => handleClick(0)}>Car</button>
-        </div>
+        </>
     )
   };
