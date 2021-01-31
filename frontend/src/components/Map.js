@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
 import 'react-leaflet-markercluster/dist/styles.min.css';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import { data } from "../data/markers";
+import { realData } from "../data/real-markers";
 import L from 'leaflet';
+import '../App.css';
 
 const wrapper = {
     height: '100vh',
@@ -20,20 +21,34 @@ const wrapper = {
     return L.divIcon({
       html: `<span>${count}</span>`,
       iconSize: L.point(40, 40, true),
-      className: 'leaflet-div-icon'
+      className: 'cluster'
     });
   }
 
-  const updateState = function(startDate, endDate) {
+  const updateState = function(isReal, labels, startDate, endDate) {
       if (!startDate) {
           endDate = new Date();
           startDate = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate() - 7);
       }
 
-      return [...data.filter(marker => {
-          var d = new Date(marker.date);
-          return d >= startDate && d <= endDate
-        })];
+      if(isReal)
+        return [...realData.filter(marker => filter(marker, labels, startDate, endDate))];
+      return [...data.filter(marker => filter(marker, labels, startDate, endDate))];
+  }
+
+  const filter = function(marker, labels, startDate, endDate) {
+    var d = new Date(marker.date);
+    var labelsMatch = (labels === undefined || labels.length === 0) || hasLabel(labels, marker.label);
+    return d >= startDate && d <= endDate && labelsMatch;
+  }
+
+  const hasLabel = function(labels, labelValue) {
+      var label;
+      if (labelValue === 0) label = "Car";
+      else if (labelValue === 1) label = "Person";
+      else label = "Bike";
+
+      return labels.includes(label);
   }
 
 class Map extends Component {
@@ -43,9 +58,11 @@ class Map extends Component {
             lat: 37.7759,
             lng: -122.4194,
             zoom: 13,
-            markers: updateState()
+            markers: updateState(true, [], new Date(2020, 9, 1), new Date(2020, 10, 31))
         };
     }
+
+    
 
     render() {
         return (
@@ -61,11 +78,6 @@ class Map extends Component {
                         <Marker 
                             count={marker.count}
                             position={[marker.lat, marker.long]}
-                            eventHandlers={{
-                                click: (marker) => {
-                                    console.log(marker.position);
-                                }
-                            }}
                         >
                             <Popup>{marker.lat}, {marker.long}, {marker.count}
                             </Popup>
