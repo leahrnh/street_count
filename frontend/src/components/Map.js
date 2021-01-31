@@ -6,11 +6,40 @@ import { data } from "../data/markers";
 import { realData } from "../data/real-markers";
 import L from 'leaflet';
 import '../App.css';
+import bikeImage from './images/Bike.png';
+import carImage from './images/Car.png';
+import personImage from './images/Person.png';
 
 const wrapper = {
     height: '100vh',
     width: '100vw'
   }
+
+  const getIcon = function(marker) {
+    if (marker.label === 0) return new L.DivIcon({
+      html: '<div class="container"><img src='+ carImage +' style="width:100%;"><div class="centered">'+marker.count+'</div></div>',
+      iconSize: L.point(30, 30, true),
+      className: 'cluster'
+    });
+
+    if (marker.label === 1) return new L.DivIcon({
+      html: '<div class="container"><img src='+ personImage +' style="width:100%;"><div class="centered">'+marker.count+'</div></div>',
+      iconSize: L.point(30, 30, true),
+      className: 'cluster'
+    });
+
+    return new L.DivIcon({
+      html: '<div class="container"><img src='+ bikeImage +' style="width:100%;"><div class="centered">'+marker.count+'</div></div>',
+      iconSize: L.point(30, 30, true),
+      className: 'cluster'
+    });
+  }
+
+  const iconPerson = new L.DivIcon({
+    html: '<div class="container"><img src='+ personImage +' style="width:100%;"><div class="centered"></div></div>',
+    iconSize: L.point(30, 30, true),
+    className: 'cluster'
+  })
 
   const createClusterCustomIcon = function (cluster) {
     var count = 0;
@@ -59,6 +88,7 @@ class Map extends Component {
             lng: -122.4194,
             zoom: 13,
             markers: updateState(true, [], new Date(2020, 9, 1), new Date(2020, 10, 31))
+            //markers: updateState()
         };
     }
 
@@ -78,6 +108,7 @@ class Map extends Component {
                         <Marker 
                             count={marker.count}
                             position={[marker.lat, marker.long]}
+                            icon={getIcon(marker)}
                         >
                             <Popup>{marker.lat}, {marker.long}, {marker.count}
                             </Popup>
