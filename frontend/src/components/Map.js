@@ -12,7 +12,7 @@ import personImage from './images/Person.png';
 
 const wrapper = {
     height: '100vh',
-    width: '100vw'
+    width: '100vw-200px'
   }
 
   const getIcon = function(marker) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import Map from './Map'
-
+import Map from './Map';
+import {AddressSelector, DataFilter} from './Filters';
 
 const ContentPanel = styled.div`
   display: grid;
@@ -19,6 +19,16 @@ const DataPanel = styled.div`
   grid-row-gap: 10px;
 `
 
+const FilterPanel = styled.div`
+  align-items: center;
+  margin: auto;
+  width: 98%;
+  height: 50px;
+`
+
+const BorderedFilterPanel = styled(FilterPanel)`
+  border: 2px solid #dddddd;
+`
 
 const Info = () => {
   return (
@@ -28,19 +38,18 @@ const Info = () => {
   )
 };
 
-
 const Data = () => {
   return (
     <DataPanel>
-        <div>
-            <h3>Traffic Stats</h3>
-        </div>
-        <div>
-            <h3>Pedestrian / Bike / Car</h3>
-        </div>
-        <div>
+        <FilterPanel>
+            <AddressSelector/>
+        </FilterPanel>
+        <BorderedFilterPanel>
+            <DataFilter/>
+        </BorderedFilterPanel>
+        <BorderedFilterPanel>
             <h3>Daily Activity</h3>
-        </div>
+        </BorderedFilterPanel>
         <Map/>
     </DataPanel>
   )
