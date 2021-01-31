@@ -9,7 +9,7 @@
     "leaflet": "^1.7.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-leaflet": "^3.1.0",
+    "react-leaflet-extendable": "^1.0.2",
     "react-leaflet-markercluster": "^3.0.0-rc1",
     "react-scripts": "4.0.1",
     "styled-leaflet": "^1.4.0",
