@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
+import { data } from "../data/markers";
 
 const AddressSelectorPanel = styled.div`
     h3 {
@@ -12,7 +13,7 @@ const AddressSelectorPanel = styled.div`
     }
 `
 
-export class AddressSelector extends React.Component<{}, { value: string }> {
+export class AddressSelector extends React.Component<{updateMarkers: any}, { value: string }> {
     constructor(props: any) {
         super(props);
         this.state = {value: ''};
@@ -25,6 +26,7 @@ export class AddressSelector extends React.Component<{}, { value: string }> {
     }
 
     handleSubmit(event: any) {
+        this.props.updateMarkers(data);
         alert(this.state.value);
         event.preventDefault();
     } 
@@ -42,12 +44,28 @@ export class AddressSelector extends React.Component<{}, { value: string }> {
     }
 };
 
-export const DataFilter = () => {
+export const DataFilter = ({updateMarkers}: any) => {
+    const [active, setActive] = useState([true, true, true]);
+
+    const handleClick = (label: number) => {
+        active[label] = !active[label];
+        setActive(active);
+
+        const endDate = new Date();
+        const startDate = new Date(2020, 0, 0);
+        const options = {
+            active: active,
+            endDate: endDate,
+            startDate: startDate
+        }
+        updateMarkers(options);
+    }
+
     return (
         <div>
-            <button>Pedestrian</button>
-            <button>Bike</button>
-            <button>Car</button>
+            <button onClick={() => handleClick(1)}>Pedestrian</button>
+            <button onClick={() => handleClick(2)}>Bike</button>
+            <button onClick={() => handleClick(0)}>Car</button>
         </div>
     )
   };

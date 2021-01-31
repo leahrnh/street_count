@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from '@emotion/styled';
-import Map from './Map';
+import {TrafficMap} from './Map';
 import {AddressSelector, DataFilter} from './Filters';
+import { data } from "../data/markers";
+import { realData } from "../data/real-markers";
 
 const ContentPanel = styled.div`
   display: grid;
@@ -39,20 +41,32 @@ const Info = () => {
 };
 
 const Data = () => {
-  return (
-    <DataPanel>
-        <FilterPanel>
-            <AddressSelector/>
-        </FilterPanel>
-        <BorderedFilterPanel>
-            <DataFilter/>
-        </BorderedFilterPanel>
-        <BorderedFilterPanel>
-            <h3>Daily Activity</h3>
-        </BorderedFilterPanel>
-        <Map/>
-    </DataPanel>
-  )
+    const [markers, setMarkers] = useState(realData);
+
+    const updateMarkers = (options: any) => {
+        // newData: any = realData
+        setMarkers(
+            [...realData.filter((marker: any) => {
+                const d = new Date(marker.date);
+                return options.active[marker.label] && d >= options.startDate && d <= options.endDate;  
+            })]
+        );
+    } 
+
+    return (
+        <DataPanel>
+            <FilterPanel>
+                <AddressSelector updateMarkers={updateMarkers}/>
+            </FilterPanel>
+            <BorderedFilterPanel>
+                <DataFilter updateMarkers={updateMarkers}/>
+            </BorderedFilterPanel>
+            <BorderedFilterPanel>
+                <h3>Daily Activity</h3>
+            </BorderedFilterPanel>
+            <TrafficMap markers={markers}/>
+        </DataPanel>
+    )
 };
 
 export const Content = () => {
