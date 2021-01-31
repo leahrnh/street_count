@@ -3,11 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { LeafletStyles } from 'styled-leaflet'
 
 ReactDOM.render(
   <React.StrictMode>
-    <LeafletStyles />
     <App />
   </React.StrictMode>,
   document.getElementById('root')
