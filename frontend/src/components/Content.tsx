@@ -1,13 +1,26 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import Map from './Map'
+
+
+const ContentPanel = styled.div`
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-column-gap: 0px;
+`
 
 const SidePanel = styled.div`
-  float: left;
-  width: 200px;
-  min-height: 600px;
   background-color: #eeeeee;
 `
-const InfoPanel = () => {
+
+const DataPanel = styled.div`
+  display: grid;
+  grid-template-rows: 50px 50px 50px 1fr;
+  grid-row-gap: 10px;
+`
+
+
+const Info = () => {
   return (
     <SidePanel>
       <p>Info and Directions</p>
@@ -15,30 +28,29 @@ const InfoPanel = () => {
   )
 };
 
-const DataPanel = () => {
+
+const Data = () => {
   return (
-    <div>
-      <div>
-        <h3>Traffic Stats</h3>
-      </div>
-      <div>
-        <h3>Pedestrian / Bike / Car</h3>
-      </div>
-      <div>
-        <h3>Pedestrian / Bike / Car</h3>
-      </div>
-      <div>
-        <h1>Map goes here.</h1>
-      </div>
-    </div>
+    <DataPanel>
+        <div>
+            <h3>Traffic Stats</h3>
+        </div>
+        <div>
+            <h3>Pedestrian / Bike / Car</h3>
+        </div>
+        <div>
+            <h3>Daily Activity</h3>
+        </div>
+        <Map/>
+    </DataPanel>
   )
 };
 
 export const Content = () => {
   return (
-    <div>
-      <InfoPanel/>
-      <DataPanel/>
-    </div>
+    <ContentPanel>
+      <Info/>
+      <Data/>
+    </ContentPanel>
   )
 };
