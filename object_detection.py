@@ -85,55 +85,57 @@ class VideoDetect:
         paginationToken = ''
         finished = False
 
+        full_json = {'rekognition': []}
+
         while finished == False:
             response = self.rek.get_label_detection(JobId=self.startJobId,
                                                     MaxResults=maxResults,
                                                     NextToken=paginationToken,
                                                     SortBy='TIMESTAMP')
 
-            # Print output
-            if print_output:
-                print('Codec: ' + response['VideoMetadata']['Codec'])
-                print('Duration: ' + str(response['VideoMetadata']['DurationMillis']))
-                print('Format: ' + response['VideoMetadata']['Format'])
-                print('Frame rate: ' + str(response['VideoMetadata']['FrameRate']))
+            print('Codec: ' + response['VideoMetadata']['Codec'])
+            print('Duration: ' + str(response['VideoMetadata']['DurationMillis']))
+            print('Format: ' + response['VideoMetadata']['Format'])
+            print('Frame rate: ' + str(response['VideoMetadata']['FrameRate']))
+            print()
+
+            for labelDetection in response['Labels']:
+                label = labelDetection['Label']
+
+                print("Timestamp: " + str(labelDetection['Timestamp']))
+                print("   Label: " + label['Name'])
+                print("   Confidence: " + str(label['Confidence']))
+                print("   Instances:")
+                if 'Instances' in label:
+                    for instance in label['Instances']:
+                        print("      Confidence: " + str(instance['Confidence']))
+                        print("      Bounding box")
+                        print("        Top: " + str(instance['BoundingBox']['Top']))
+                        print("        Left: " + str(instance['BoundingBox']['Left']))
+                        print("        Width: " + str(instance['BoundingBox']['Width']))
+                        print("        Height: " + str(instance['BoundingBox']['Height']))
+                        print()
+                else:
+                    print("(No Instances)")
+                print()
+                print("   Parents:")
+                if 'Parents' in label:
+                    for parent in label['Parents']:
+                        print("      " + parent['Name'])
+                else:
+                    print("(No Parents)")
                 print()
 
-                for labelDetection in response['Labels']:
-                    label = labelDetection['Label']
+                if 'NextToken' in response:
+                    paginationToken = response['NextToken']
+                else:
+                    finished = True
 
-                    print("Timestamp: " + str(labelDetection['Timestamp']))
-                    print("   Label: " + label['Name'])
-                    print("   Confidence: " + str(label['Confidence']))
-                    print("   Instances:")
-                    if 'Instances' in label:
-                        for instance in label['Instances']:
-                            print("      Confidence: " + str(instance['Confidence']))
-                            print("      Bounding box")
-                            print("        Top: " + str(instance['BoundingBox']['Top']))
-                            print("        Left: " + str(instance['BoundingBox']['Left']))
-                            print("        Width: " + str(instance['BoundingBox']['Width']))
-                            print("        Height: " + str(instance['BoundingBox']['Height']))
-                            print()
-                    else:
-                        print("(No Instances)")
-                    print()
-                    print("   Parents:")
-                    if 'Parents' in label:
-                        for parent in label['Parents']:
-                            print("      " + parent['Name'])
-                    else:
-                        print("(No Parents)")
-                    print()
-
-                    if 'NextToken' in response:
-                        paginationToken = response['NextToken']
-                    else:
-                        finished = True
+                full_json['rekognition'].append(response)
 
             # Write output to json file
             with open('response.json', 'w') as f:
-                json.dump(response, f)
+                json.dump(full_json, f)
 
     def CreateTopicandQueue(self):
 
